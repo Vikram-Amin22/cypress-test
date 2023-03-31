@@ -1,0 +1,41 @@
+[
+    {
+        "email": "frxwl+a_i1t2@slashash.co",
+        "password": "1989",
+        "rule_name": "plan_cost_benchmark",
+        "page_name": "Plan Cost Benchmark",
+        "access": {
+            "view": true,
+            "add": true,
+            "edit": false,
+            "delete": true,
+            "export": false
+        },
+        "visible": {
+            "view":"be.visible",
+            "add":"be.visible",
+            "export":"be.visible",
+            "delete":"be.visible"
+            
+        },
+        "filters": {
+            "plan_sponsor": [
+                { "name" : "CISCO", "value" : "3aabfdf5-95fa-4655-8d7b-24f0472c45ac" , "contain" : "contain"}
+            ],
+            "date": [
+                "2023-02-21",
+                "2023-03-09"
+            ]
+        },
+        "add_plan_cost_benchmark": {
+            "success": 200,
+            "unauthorized": 401
+        },
+        "delete_plan_cost_benchmark": {
+            "success": 200,
+            "unauthorized": 401
+        }
+    }
+]
+
+

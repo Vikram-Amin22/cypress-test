@@ -1,0 +1,12 @@
+download zip file from git  https://github.com/cypress-io/cypress-realworld-testing-course-app/tree/start
+
+delete the package.json and node modules and then npm install 
+npm run dev 
+
+npm install cypress --save-dev
+
+npm install cypress-xpath
+
+npx cypress open   // launch 
+
+npx cypress run --browser chrome

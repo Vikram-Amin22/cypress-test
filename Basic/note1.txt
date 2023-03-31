@@ -1,0 +1,197 @@
+ cy.screenshot()    // Cypress to take a screenshot manually 
+ cy.log()           //console.log()
+
+ cy.get(".new-todo").type("Buy Milk{enter}")  // getting the element with the class of .new-todo and then typing "Buy Milk" and
+                                             // simulating pressing the Enter key to add the todo.
+
+ cy.get(".todo-list li").should("have.length", 1)   // Assert. In this step
+
+ cy.exec() - to run system commands
+ cy.task() - to run code in Node via the setupNodeEvents function
+ cy.request() - to make HTTP requests
+
+  .blur() - Make a focused DOM element blur.
+  .focus() - Focus on a DOM element.
+  .clear() - Clear the value of an input or textarea.
+  .check() - Check checkbox(es) or radio(s).
+  .uncheck() - Uncheck checkbox(es).
+  .select() - Select an <option> within a <select>.
+  .dblclick() - Double-click a DOM element.
+  .rightclick() - Right-click a DOM element.
+
+  cy.pause()
+  cy.url()
+
+ cy.clock()  // control time  set time and date and set timeout and set interval
+ cy.stub() Stub Objects //callback to fire ,promisses to resolve
+ cy.window()  // modify the stores - utilize the application state and directly store dispatch events and force it responds programtically
+
+it.skip  To skip a specified suite or test, append 
+
+// force the click and all subsequent events
+// to fire even if this element isn't considered 'actionable'
+cy.get('button').click({ force: true })
+
+
+Cypress.Cookies.debug(true) // now Cypress will log when it alters cookies
+cy.clearCookie('foo')
+cy.setCookie('foo', 'bar')
+
+Cypress.Cookies.debug(false) // now debugging is turned off
+
+cy.getCookies() // Get cookies for the currrent domain
+
+cy.clearLocalStorage()
+cy.clearLocalStorage(key)
+cy.clearLocalStorage(options)
+cy.clearLocalStorage(keys, options)
+
+
+//------------------- error 
+
+ using a try-catch block doesn’t help To handle the error from the Web page under test, cypress provides the special command 
+
+
+cy.on('uncaught:exception', (err, runnable) => {})
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------------
+
+// .then()  behaves similarly to Promises in JavaScript
+
+cy.get("button").then(($btn) => {
+  const cls = $btn.attr("class")
+
+  cy.wrap($btn).click().should("not.have.class", cls)  // $btn is a jQuery object. This means that if we would like Cypress to perform some 
+                                                      //action upon it, we first need to use cy.wrap() for Cypress to interact with it.
+})
+
+
+//---------------------------------------------------------------------------------------------------------------------------------
+
+Accessing Fixtures:
+
+beforeEach(() => {
+  cy.fixture('users.json').as('users')  // alias the users fixtures
+})
+
+it('utilize users in some way', function () {
+  const user = this.users[0]                       // access the users property
+  cy.get('header').should('contain', user.name)   // make sure the header contains the first user name
+
+  //  2
+
+  it('utilize users in some way', function () {
+  cy.get('@users').then((users) => {    // use the special '@' syntax to access aliases  which avoids the use of 'this'
+    const user = users[0]              // access the users argument
+    cy.get('header').should('contain', user.name)
+  })
+})
+})
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+
+Aliases:
+
+cy.get("table").find("tr").as("rows")   // Create an alias using the `as()` Cypress Command
+cy.get("@rows")                        // Reference Cypress Alias `rows`
+
+
+Wait:
+
+describe("User Sign-up and Login", () => {
+  beforeEach(() => {
+    cy.request("POST", "/users").as("signup") // creating the signup alias
+  })
+
+  it("should allow a visitor to sign-up, login, and logout", () => {
+    cy.visit("/")
+    // ...
+
+    cy.wait("@signup") // waiting upon the signup alias
+    // ...
+  })
+})
+
+
+
+//-------------------------------------------------------------------------------------------------------
+
+// -- Start: Our Application Code --
+function add(a, b) {
+  return a + b
+}
+
+function subtract(a, b) {
+  return a - b
+}
+
+function divide(a, b) {
+  return a / b
+}
+
+function multiply(a, b) {
+  return a * b
+}
+// -- End: Our Application Code --
+
+// -- Start: Our Cypress Tests --
+describe('Unit test our math functions', () => {
+  context('math', () => {
+    it('can add numbers', () => {
+      expect(add(1, 2)).to.eq(3)
+    })
+
+    it('can subtract numbers', () => {
+      expect(subtract(5, 12)).to.eq(-7)
+    })
+
+    specify('can divide numbers', () => {
+      expect(divide(27, 9)).to.eq(3)
+    })
+
+    specify('can multiply numbers', () => {
+      expect(multiply(5, 4)).to.eq(20)
+    })
+  })
+})
+// -- End: Our Cypress Tests --
+
+//---------------------------------------------------------------------------------------
+
+
+const favorites = { color: 'blue' }
+
+cy.wrap(favorites).its('color').as('favoriteColor')
+
+cy.then(function () {
+  favorites.color = 'red'
+})
+
+cy.get('@favoriteColor').then(function (aliasValue) {
+  expect(aliasValue).to.eql('red')
+
+  expect(this.color).to.eql('blue')
+})
+
+
+//-------------------------------------------------------------------
+
+
+
+it('cy.wait() - wait for a specific route', () => {
+    // Listen to GET to comments/1
+    cy.intercept('GET', '**/comments/*').as('getComment')
+
+    // we have code that gets a comment when
+    // the button is clicked in scripts.js
+    cy.get('.network-btn').click()
+
+    // wait for GET comments/1
+    cy.wait('@getComment').its('response.statusCode').should('be.oneOf', [200, 304])
+  })

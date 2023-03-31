@@ -1,0 +1,19 @@
+   { "name" : "HDFC Bank", "value" : "86eccac2-e75f-4714-8c33-fa78c4daf480" , "contain" : "contain"}
+
+
+     { "name" : "CISCO", "value" : "3aabfdf5-95fa-4655-8d7b-24f0472c45ac" , "contain" : "contain"}
+
+
+
+
+cy.get('table').contains('td', 'jacobs').should('be.visible');
+     
+cy.get('table').contains('td', 'jacobs').then(elem => {
+    // Do something with this specific element...
+});
+
+
+
+cy.get("td:nth-child(2)").each(($el) => {
+  const text =
+})
